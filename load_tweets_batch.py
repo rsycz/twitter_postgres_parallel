@@ -396,10 +396,6 @@ def _insert_tweets(connection,input_tweets):
     bulk_insert(connection, 'users', users)
     bulk_insert(connection, 'users', users_unhydrated_from_tweets)
     bulk_insert(connection, 'users', users_unhydrated_from_mentions)
-    bulk_insert(connection, 'tweet_mentions', tweet_mentions)
-    bulk_insert(connection, 'tweet_tags', tweet_tags)
-    bulk_insert(connection, 'tweet_media', tweet_media)
-    bulk_insert(connection, 'tweet_urls', tweet_urls)
 
     # the tweets data cannot be inserted using the bulk_insert function because
     # the geo column requires special SQL code to generate the column;
@@ -422,6 +418,12 @@ def _insert_tweets(connection,input_tweets):
         '''
         )
     res = connection.execute(sql, { key+str(i):value for i,tweet in enumerate(tweets) for key,value in tweet.items() })
+
+    bulk_insert(connection, 'tweet_mentions', tweet_mentions)
+    bulk_insert(connection, 'tweet_tags', tweet_tags)
+    bulk_insert(connection, 'tweet_media', tweet_media)
+    bulk_insert(connection, 'tweet_urls', tweet_urls)
+
 if __name__ == '__main__':
 
     # process command line args
